@@ -1,0 +1,114 @@
+/* Estilos globais */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+/* Cabeçalho */
+header {
+  background: #b5bad3;
+  color: #20284e;
+  padding: 1rem 4rem;
+  text-align: center;
+  border-radius: 8px;
+}
+
+header img {
+  width: 30%;
+  height: auto;
+}
+
+/* Área principal */
+main {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Títulos das seções */
+h1 {
+  color: #20284e;
+  font-size: medium;
+}
+
+h2 {
+  color: #20284e;
+}
+
+/* Formulário */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+input, select, button {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background: #20284e;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #101532;
+}
+
+/* Lista de Pacientes */
+#patient-list-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+#patient-list-section li {
+  background: #f9f9f9;
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Rodapé */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #333;
+  color: #fff;
+  margin-top: 2rem;
+}
+
+/* Ajustes para dispositivos móveis */
+@media (max-width: 768px) {
+  header img {
+    width: 50%; /* Aumenta o tamanho do logo no mobile */
+  }
+
+  header h1 {
+    font-size: 1.2rem; /* Diminui o tamanho do título no mobile */
+    line-height: 1.4; /* Melhora o espaçamento */
+  }
+}
+
+@media (max-width: 480px) {
+  header img {
+    width: 70%; /* Ainda maior para telas menores */
+  }
+
+  header h1 {
+    font-size: 1rem; /* Título menor para telas pequenas */
+  }
+}
