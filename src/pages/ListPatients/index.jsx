@@ -13,7 +13,12 @@ function ListPatients() {
         async function getPatients() {
             try {
                 const { data } = await api.get('/patients');
-                setPatients(data);
+                console.log("Pacientes carregados:", data);
+                if (Array.isArray(data)) {
+                    setPatients(data); // Atualiza com os pacientes existentes
+                } else {
+                    console.error('A resposta da API não é um array:', data);
+                }
             } catch (error) {
                 console.error('Erro ao buscar pacientes:', error);
             }
@@ -23,9 +28,13 @@ function ListPatients() {
 
     async function deletePatients(id) {
         try {
-            await api.delete(`/patients/${id}`);
-            // Atualizar lista após deletar
-            setPatients((prevPatients) => prevPatients.filter(patient => patient.id !== id));
+            const response = await api.delete(`/patients/${id}`);
+            if (response.status === 200) {
+                // Atualiza lista após deletar
+                setPatients((prevPatients) => prevPatients.filter(patient => patient.id !== id));
+            } else {
+                console.error('Erro ao deletar paciente, status:', response.status);
+            }
         } catch (error) {
             console.error('Erro ao deletar paciente:', error);
         }
@@ -50,10 +59,21 @@ function ListPatients() {
             });
 
             alert("Arquivo enviado com sucesso!");
-            setPatients((prev) => [...prev, ...response.data]); // Atualiza a lista com novos pacientes.
+
+            console.log("Resposta do servidor após upload:", response.data);
+
+            // Verifica se a resposta contém dados esperados
+            if (response.data && Array.isArray(response.data)) {
+                setPatients(response.data);  // Atualiza completamente com os novos pacientes
+            } else {
+                console.error('Resposta do servidor não é um array:', response.data);
+                alert("Clique em OK para atualizar página"); //mensagem: Erro ao processar os dados recebidos.
+                window.location.reload(); // Força a atualização da página após o erro
+            }
         } catch (error) {
             console.error("Erro ao fazer upload do arquivo:", error);
             alert("Erro ao processar o arquivo.");
+            window.location.reload(); // Força a atualização da página após o erro
         }
     }
 
@@ -77,22 +97,26 @@ function ListPatients() {
                 <button type="submit">Enviar Excel</button>
             </form>
 
-            {patients.map((patient) => (
-                <div key={patient.id}>
-                    <h3>{patient.name}</h3>
-                    <p><strong>CPF:</strong> {patient.CPF}</p>
-                    <p><strong>Telefone:</strong> {patient.phone}</p>
-                    <p><strong>Email:</strong> {patient.email}</p>
-                    <p><strong>Local:</strong> {patient.local}</p>
-                    <button 
-                        type="button" 
-                        className="img-trash" 
-                        onClick={() => deletePatients(patient.id)}
-                    >
-                        <img src={Trash} alt="Excluir" />
-                    </button>
-                </div>
-            ))}
+            {patients.length === 0 ? (
+                <p>Carregando pacientes...</p>
+            ) : (
+                patients.map((patient) => (
+                    <div key={patient.id}>
+                        <h3>{patient.name}</h3>
+                        <p><strong>CPF:</strong> {patient.CPF}</p>
+                        <p><strong>Telefone:</strong> {patient.phone}</p>
+                        <p><strong>Email:</strong> {patient.email}</p>
+                        <p><strong>Local:</strong> {patient.local}</p>
+                        <button 
+                            type="button" 
+                            className="img-trash" 
+                            onClick={() => deletePatients(patient.id)}
+                        >
+                            <img src={Trash} alt="Excluir" />
+                        </button>
+                    </div>
+                ))
+            )}
 
             <button type="button" onClick={() => navigate('/')}>Voltar</button>
 
@@ -104,4 +128,3 @@ function ListPatients() {
 }
 
 export default ListPatients;
-
